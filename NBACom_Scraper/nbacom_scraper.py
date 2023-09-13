@@ -4,14 +4,22 @@ import pandas as pd
 #import xlrx
 import time
 
-def get_player_stat(season, season_type='Regular', mode='PerGame', season_segment=''):
+def get_general_stat(season, measuretype='Base', season_type='Regular', mode='PerGame', season_segment='', advance_filters={}):
     '''
     -- Retrieve player-level data from stats.nba.com 
-    
-    season:
-    season_type:
-    mode:
-    season_segment:
+    -- Visit nba.com to understand some of the paramterers below
+
+    measuretype: string
+        The type of player metrics to retrieve, ex. Advanced
+    season: string
+        The nba season to retrieve
+    season_type: string
+        The type of season to retrieve, default 'Regular'
+    mode: string 
+        The aggregation method to use, ex. 'PerGame'
+    season_segment: string
+        Specify the time segment of player stats to retrieve, three big segments including 'Last N Games', 'Month' and 'Season Segment' can be chosen.
+        ex. 10, 'Post All-Star'
     '''
 
     headers = {
@@ -20,16 +28,83 @@ def get_player_stat(season, season_type='Regular', mode='PerGame', season_segmen
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.0.0 Safari/537.36 Edg/115.0.1901.200',
         'Accept-Encoding': 'gzip, deflate, br'
     }
-    link = 'https://stats.nba.com/stats/leaguedashplayerstats?College=&Conference=&Country=&DateFrom=&DateTo=&Division=&DraftPick=&DraftYear=&GameScope=&GameSegment=&Height=&LastNGames=0&LeagueID=00&Location=&MeasureType=Base&Month=0&OpponentTeamID=0&Outcome=&PORound=0&PaceAdjust=N&PerMode=' + mode + '&Period=0&PlayerExperience=&PlayerPosition=&PlusMinus=N&Rank=N&Season=' + season + '&SeasonSegment=' + season_segment + '&SeasonType=' + season_type + '%20Season&ShotClockRange=&StarterBench=&TeamID=0&VsConference=&VsDivision=&Weight='
+    if season_segment != '':
+        if season_segment in ['Pre All-Star', 'Post All-Star']:
+            link = 'https://stats.nba.com/stats/leaguedashplayerstats?College=&Conference=&Country=&DateFrom=&DateTo=&Division=&DraftPick=&DraftYear=&GameScope=&GameSegment=&Height=&LastNGames=0&LeagueID=00&Location=&MeasureType=' + measuretype + '&Month=0&OpponentTeamID=0&Outcome=&PORound=0&PaceAdjust=N&PerMode=' + mode + '&Period=0&PlayerExperience=&PlayerPosition=&PlusMinus=N&Rank=N&Season=' + season + '&SeasonSegment=' + season_segment + '&SeasonType=' + season_type + '&ShotClockRange=&StarterBench=&TeamID=0&VsConference=&VsDivision=&Weight='
+        elif int(season_segment) in range(1, 12):
+            link = 'https://stats.nba.com/stats/leaguedashplayerstats?College=&Conference=&Country=&DateFrom=&DateTo=&Division=&DraftPick=&DraftYear=&GameScope=&GameSegment=&Height=&LastNGames=0&LeagueID=00&Location=&MeasureType=' + measuretype + '&Month='+ season_segment +'&OpponentTeamID=0&Outcome=&PORound=0&PaceAdjust=N&PerMode=' + mode + '&Period=0&PlayerExperience=&PlayerPosition=&PlusMinus=N&Rank=N&Season=' + season + '&SeasonSegment=&SeasonType=' + season_type + '&ShotClockRange=&StarterBench=&TeamID=0&VsConference=&VsDivision=&Weight='
+        else:
+            pass
+    else:
+        link = 'https://stats.nba.com/stats/leaguedashplayerstats?College=&Conference=&Country=&DateFrom=&DateTo=&Division=&DraftPick=&DraftYear=&GameScope=&GameSegment=&Height=&LastNGames=0&LeagueID=00&Location=&MeasureType=' + measuretype + '&Month=0&OpponentTeamID=0&Outcome=&PORound=0&PaceAdjust=N&PerMode=' + mode + '&Period=0&PlayerExperience=&PlayerPosition=&PlusMinus=N&Rank=N&Season=' + season + '&SeasonSegment=' + season_segment + '&SeasonType=' + season_type + '&ShotClockRange=&StarterBench=&TeamID=0&VsConference=&VsDivision=&Weight='
     
     res = requests.get(link, headers=headers).json()
     return res
 
+
+def get_playtype_stat(season, playtype='Isolation', season_type='Regular Season', mode='PerGame', advance_filters={}):
+    '''
+    -- Retrieve player-level playtype data from stats.nba.com 
+    -- Visit nba.com to understand some of the paramterers below
+
+    playtype: string
+        ex. Isolation
+    season: string
+        The nba season to retrieve
+    season_type: string
+        The type of season to retrieve, default 'Regular Season'
+    mode: string 
+        The aggregation method to use, ex. 'PerGame'
+    '''
+
+    headers = {
+        'Connection': 'keep-alive',
+        'Referer': 'https://www.nba.com/',
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.0.0 Safari/537.36 Edg/115.0.1901.200',
+        'Accept-Encoding': 'gzip, deflate, br'
+    }
+
+    link = 'https://stats.nba.com/stats/synergyplaytypes?LeagueID=00&PerMode=' + mode + '&PlayType=' + playtype +'&PlayerOrTeam=P&SeasonType='+ season_type +'&SeasonYear='+ season +'&TypeGrouping=offensive'
+    res = requests.get(link, headers=headers).json()
+    return res
+
+
+def get_dashboard_stat(season, season_type='Regular Season', mode='PerGame', shot_range='', advance_filters={}):
+    '''
+    -- Retrieve player-level playtype data from stats.nba.com 
+    -- Visit nba.com to understand some of the paramterers below
+
+    playtype: string
+
+    season: string
+        The nba season to retrieve
+    season_type: string
+        The type of season to retrieve, default 'Regular Season'
+    mode: string 
+        The aggregation method to use, ex. 'PerGame'
+    season_segment: string
+
+    '''
+
+    headers = {
+        'Connection': 'keep-alive',
+        'Referer': 'https://www.nba.com/',
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.0.0 Safari/537.36 Edg/115.0.1901.200',
+        'Accept-Encoding': 'gzip, deflate, br'
+    }
+    
+    link = 'https://stats.nba.com/stats/leaguedashplayerptshot?CloseDefDistRange=&College=&Conference=&Country=&DateFrom=&DateTo=&Division=&DraftPick=&DraftYear=&DribbleRange=&GameScope=&GameSegment=&GeneralRange='+ shot_range +'&Height=&LastNGames=0&LeagueID=00&Location=&Month=0&OpponentTeamID=0&Outcome=&PORound=0&PaceAdjust=N&PerMode='+ mode +'&Period=0&PlayerExperience=&PlayerPosition=&PlusMinus=N&Rank=N&Season='+ season +'&SeasonSegment=&SeasonType='+ season_type +'&ShotClockRange=&ShotDistRange=&StarterBench=&TeamID=0&TouchTimeRange=&VsConference=&VsDivision=&Weight='
+    
+    res = requests.get(link, headers=headers).json()
+    return res
+
+
+
 def stat_parse(data):
     '''
-    -- Parse the json data returned from stat.nba.com
+    -- Parse the JSON format data returned from stat.nba.com
     
-    data: json source returned from stat.nba.com 
+    data: JSON source returned from stat.nba.com 
     '''
     
     out = {}
