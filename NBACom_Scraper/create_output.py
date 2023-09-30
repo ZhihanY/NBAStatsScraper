@@ -14,7 +14,9 @@ def output_dataframe(df, season, directory):
     directory: string
 
     '''
-    pass 
+    res = pd.DataFrmae(df)
+    res['season'] = season
+    return res 
 
 def add_worksheet(url, worksheets):
     '''
