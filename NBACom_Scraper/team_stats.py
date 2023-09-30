@@ -1,6 +1,8 @@
 import requests
 from bs4 import BeautifulSoup
+from advanced_stats import stat_parse
 
+@stat_parse
 def get_team_stat(season, measure_type='Base', season_type='Regular%20Season', mode='PerGame', season_segment=''):
     '''
     -- Retrieve team-level data from stats.nba.com
@@ -28,7 +30,7 @@ def get_team_stat(season, measure_type='Base', season_type='Regular%20Season', m
     res = requests.get(link, headers=headers).json()
     return res
 
-
+@stat_parse
 def get_boxscores(season, season_type='Regular%20Season', season_segment=''):
     '''
     -- Retrieve team-level box scores from stats.nba.com
@@ -52,7 +54,7 @@ def get_boxscores(season, season_type='Regular%20Season', season_segment=''):
     res = requests.get(link, headers=headers).json()
     return res
 
-
+@stat_parse
 def get_advanced_boxscores(season, measure_type='Base', season_type='Regular%20Season', season_segment=''):
     '''
     -- Retrieve team-level box scores from stats.nba.com

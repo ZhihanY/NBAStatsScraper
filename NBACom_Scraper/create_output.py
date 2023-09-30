@@ -1,12 +1,11 @@
 import pandas as pd
 import gspread
-from google.auth import default
 from gspread_dataframe import get_as_dataframe, set_with_dataframe
 
 # Connect and create google sheet for data storage --example 
-creds, _ = default()
+#creds, _ = default()
 
-def output_dataframe(df, season, directory):
+def output_dataframe(func):
     '''
     -- Process input data to output a dataframe for usage
     df: DataFrame
@@ -14,11 +13,13 @@ def output_dataframe(df, season, directory):
     directory: string
 
     '''
-    res = pd.DataFrmae(df)
-    res['season'] = season
-    return res 
+    def wrapper(*args, **kwargs):
+        #out['season'] = season
+        return pd.DataFrame(func(*args, **kwargs)) 
+    return wrapper 
 
-def add_worksheet(url, worksheets):
+
+def add_worksheet(url, creds, worksheets):
     '''
     -- 
 
