@@ -1,6 +1,6 @@
 import requests
 from bs4 import BeautifulSoup
-from NBACom_Scraper.tools import stat_parse_decorator, stat_parse, output_dataframe
+from tools import stat_parse_decorator, stat_parse, output_dataframe
 
 @output_dataframe
 @stat_parse_decorator

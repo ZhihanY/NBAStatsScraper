@@ -1,0 +1,16 @@
+LICENSE
+README.md
+setup.py
+BBR_Scraper/__init__.py
+BBR_Scraper/seasons.py
+NBACom_Scraper/__init__.py
+NBACom_Scraper/advance_filters.py
+NBACom_Scraper/advanced_stats.py
+NBACom_Scraper/example.py
+NBACom_Scraper/general_stats.py
+NBACom_Scraper/team_stats.py
+NBACom_Scraper/tools.py
+NBAScraper.egg-info/PKG-INFO
+NBAScraper.egg-info/SOURCES.txt
+NBAScraper.egg-info/dependency_links.txt
+NBAScraper.egg-info/top_level.txt

@@ -1,0 +1,7 @@
+Metadata-Version: 2.1
+Name: NBAStatsScraper
+Version: 0.5
+Summary: A Python Client for scraping stats from multiple NBA websites
+Author: Zhihan Yang
+Requires-Python: >=3.6
+License-File: LICENSE
